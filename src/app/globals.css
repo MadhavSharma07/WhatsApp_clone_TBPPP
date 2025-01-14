@@ -4,10 +4,9 @@
 
 @layer base {
 	:root {
-		--background: 48, 8%, 88%; /* CHANGED */
+		--background: 48, 8%, 88%; 
 		--foreground: 222.2 84% 4.9%;
 
-		/* CLASSES ADDED BY US */
 		--container: 0 0 100%;
 		--left-panel: 203, 32%, 10%;
 
@@ -19,7 +18,6 @@
 
 		--green-primary: 200, 70%, 33%;
 		--green-chat: 200, 91%, 91%;
-		/* CLASSES ADDED BY US */
 
 		--card: 0 0% 100%;
 		--card-foreground: 222.2 84% 4.9%;
@@ -50,10 +48,9 @@
 	}
 
 	.dark {
-		--background: 200 34% 21%; /* CHANGED */
+		--background: 200 34% 21%; 
 		--foreground: 200 40% 98%;
 
-		/* CLASSES ADDED BY US: */
 		--container: 202, 31%, 7%;
 
 		--gray-primary: 202, 70%, 16%;
@@ -67,7 +64,6 @@
 		--green-chat: 200, 100%, 18%;
 
 		--gray-tertiary: 203, 22%, 21%;
-		/* CLASSES ADDED BY US */
 
 		--card: 222.2 84% 4.9%;
 		--card-foreground: 210 40% 98%;
@@ -104,8 +100,6 @@
 		@apply bg-background text-foreground;
 	}
 }
-
-/* WE ADDED => DARK MODE THIN SCROLLBAR */
 @layer components {
 	::-webkit-scrollbar {
 		width: 8px;
