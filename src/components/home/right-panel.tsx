@@ -5,17 +5,16 @@ import MessageInput from "./message-input";
 import MessageContainer from "./message-container";
 import ChatPlaceHolder from "@/components/home/chat-placeholder";
 import GroupMembersDialog from "./group-members-dialog";
-
 const RightPanel = () => {
-	const selectedConversation = false;
+	const selectedConversation = true;
 	if (!selectedConversation) return <ChatPlaceHolder />;
-
-	const conversationName = "John Doe";
-    const isGroup = false;
+	const isGroup = true;
+	const conversationName = "fun";
 
 	return (
 		<div className='w-3/4 flex flex-col'>
 			<div className='w-full sticky top-0 z-50'>
+				{/* Header */}
 				<div className='flex justify-between bg-gray-primary p-3'>
 					<div className='flex gap-3 items-center'>
 						<Avatar>
