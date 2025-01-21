@@ -31,11 +31,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-<<<<<<< HEAD
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-=======
-          className={${geistSans.variable} ${geistMono.variable} antialiased}
->>>>>>> 7d7d84b17723c8c7fb444100ed60e978c3a0ae23
         >
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
             <ConvexClientProvider>
