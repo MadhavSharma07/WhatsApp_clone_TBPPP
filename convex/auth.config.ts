@@ -10,4 +10,3 @@ const authconfig= {
 
 
   export default authconfig;
-

@@ -1,25 +1,25 @@
 export const conversations = [
 	{
 		_id: "1",
-		admin: "amar",
+		admin: "user1",
 		groupImage: null,
-		groupName: "amar",
-		participants: ["amar", "user2", "user3"],
+		groupName: "Group A",
+		participants: ["user1", "user2", "user3"],
 		_creationTime: 1638232272, // Unix timestamp for 2021-11-30 12:04:32 UTC
 		lastMessage: {
 			_id: "1",
 			messageType: "text",
 			content: "Hello everyone!",
-			sender: "amar",
+			sender: "user1",
 		},
-		sender: "amar",
+		sender: "user1",
 		isOnline: true,
 	},
 	{
 		_id: "2",
-		admin: "pushpak",
+		admin: null,
 		groupImage: "https://avatars.githubusercontent.com/u/75279146?v=4",
-		groupName: "pushpak",
+		groupName: null,
 		participants: ["user4", "user5"],
 		_creationTime: 1638235872, // Unix timestamp for 2021-11-30 13:04:32 UTC
 		lastMessage: {
@@ -33,9 +33,9 @@ export const conversations = [
 	},
 	{
 		_id: "3",
-		admin: "madhav",
+		admin: null,
 		groupImage: null,
-		groupName: "madhav",
+		groupName: null,
 		participants: ["user6", "user7"],
 		_creationTime: 1638239472, // Unix timestamp for 2021-11-30 14:04:32 UTC
 		lastMessage: {
@@ -49,10 +49,11 @@ export const conversations = [
 	},
 	{
 		_id: "4",
-		admin: "aditya",
-		groupImage:null,
-		groupName: "aditya",
-		participants: ["user8", "user9", "amar0"],
+		admin: null,
+		groupImage:
+			"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png",
+		groupName: null,
+		participants: ["user8", "user9", "user10"],
 		_creationTime: 1638243072, // Unix timestamp for 2021-11-30 15:04:32 UTC
 		lastMessage: {
 			_id: "4",
@@ -61,7 +62,7 @@ export const conversations = [
 			sender: "user9",
 		},
 		sender: "user9",
-		isOnline: false,
+		isOnline: true,
 	},
 ];
 
@@ -69,7 +70,7 @@ export const messages = [
 	{
 		_id: "1",
 		content: "Hello everyone!",
-		sender: "amar",
+		sender: "user1",
 		messageType: "text",
 	},
 	{
@@ -81,7 +82,7 @@ export const messages = [
 	{
 		_id: "3",
 		content: "How's it going!?",
-		sender: "amar",
+		sender: "user1",
 		messageType: "text",
 	},
 	{
@@ -94,8 +95,8 @@ export const messages = [
 
 export const users = [
 	{
-		_id: "amar",
-		name: "amar",
+		_id: "user1",
+		name: "John Doe",
 		email: "johndoe@email.com",
 		image: "https://randomuser.me/api/portraits/men/67.jpg",
 		admin: true,
@@ -103,24 +104,16 @@ export const users = [
 	},
 	{
 		_id: "user2",
-		name: "madhav",
+		name: "Jane Doe",
 		email: "janedoe@email.com",
-		image: "https://randomuser.me/api/portraits/men/6.jpg",
+		image: "https://randomuser.me/api/portraits/women/67.jpg",
 		isOnline: true,
-		admin:true,
 	},
 	{
 		_id: "user3",
-		name: "pushpak",
+		name: "Alice",
 		email: "alice@email.com",
-		image: "https://randomuser.me/api/portraits/men/68.jpg",
-		isOnline: false,
-	},
-	{
-		_id: "user4",
-		name: "aditya",
-		email: "alice@email.com",
-		image: "https://randomuser.me/api/portraits/men/7.jpg",
+		image: "https://randomuser.me/api/portraits/women/68.jpg",
 		isOnline: false,
 	},
 ];

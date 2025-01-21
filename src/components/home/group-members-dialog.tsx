@@ -20,30 +20,30 @@ const GroupMembersDialog = () => {
 				<DialogHeader>
 					<DialogTitle className='my-2'>Current Members</DialogTitle>
 					<DialogDescription>
-						<span className='flex flex-col gap-3 '>
+						<div className='flex flex-col gap-3 '>
 							{users?.map((user) => (
-								<span key={user._id} className={`flex gap-3 items-center p-2 rounded`}>
+								<div key={user._id} className={`flex gap-3 items-center p-2 rounded`}>
 									<Avatar className='overflow-visible'>
 										{user.isOnline && (
-											<span className='absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full border-2 border-foreground' />
+											<div className='absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full border-2 border-foreground' />
 										)}
 										<AvatarImage src={user.image} className='rounded-full object-cover' />
 										<AvatarFallback>
-											<span className='animate-pulse bg-gray-tertiary w-full h-full rounded-full'></span>
+											<div className='animate-pulse bg-gray-tertiary w-full h-full rounded-full'></div>
 										</AvatarFallback>
 									</Avatar>
 
-									<span className='w-full '>
-										<span className='flex items-center gap-2'>
-											<span className='text-md font-medium'>
+									<div className='w-full '>
+										<div className='flex items-center gap-2'>
+											<h3 className='text-md font-medium'>
 												{user.name || user.email.split("@")[0]}
-											</span>
+											</h3>
 											{user.admin && <Crown size={16} className='text-yellow-400' />}
-										</span>
-									</span>
-								</span>
+										</div>
+									</div>
+								</div>
 							))}
-						</span>
+						</div>
 					</DialogDescription>
 				</DialogHeader>
 			</DialogContent>
