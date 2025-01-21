@@ -7,11 +7,11 @@ import ChatPlaceHolder from "@/components/home/chat-placeholder";
 import GroupMembersDialog from "./group-members-dialog";
 
 const RightPanel = () => {
-	const selectedConversation = false;
+	const selectedConversation = true;
 	if (!selectedConversation) return <ChatPlaceHolder />;
 
-	const conversationName = "John Doe";
-    const isGroup = false;
+	const conversationName = "fun";
+    const isGroup = true;
 
 	return (
 		<div className='w-3/4 flex flex-col'>

@@ -9,19 +9,19 @@ const LeftPanel = () => {
 	// const conversations = [];
 
 	return (
-		<div className='w-1/4 border-gray-600 border-r'>
-			<div className='sticky top-0 bg-left-panel z-10'>
-				<div className='flex justify-between bg-gray-primary p-3 items-center'>
+		<span className='w-1/4 border-gray-600 border-r'>
+			<span className='sticky top-0 bg-left-panel z-10'>
+				<span className='flex justify-between bg-gray-primary p-3 items-center'>
 					<UserButton/>
 
-					<div className='flex items-center gap-3'>
+					<span className='flex items-center gap-3'>
 						<MessageSquareDiff size={20} /> 
 						<ThemeSwitch />
-					</div>
-				</div>
-				<div className='p-3 flex items-center'>
+					</span>
+				</span>
+				<span className='p-3 flex items-center'>
 					{/* Search */}
-					<div className='relative h-10 mx-3 flex-1'>
+					<span className='relative h-10 mx-3 flex-1'>
 						<Search
 							className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10'
 							size={18}
@@ -31,10 +31,10 @@ const LeftPanel = () => {
 							placeholder='Search or start a new chat'
 							className='pl-10 py-2 text-sm w-full rounded shadow-sm bg-gray-primary focus-visible:ring-transparent'
 						/>
-					</div>
-				</div>
-			</div>
-			<div className='my-3 flex flex-col gap-0 max-h-[80%] overflow-auto'>
+					</span>
+				</span>
+			</span>
+			<span className='my-3 flex flex-col gap-0 max-h-[80%] overflow-auto'>
 				{/* Conversations will go here*/}
                 {conversations.map((conversations)=>(
                     <Conversation key={conversations._id} conversation={conversations} />
@@ -47,8 +47,8 @@ const LeftPanel = () => {
 						</p>
 					</>
 				)}
-			</div>
-		</div>
+			</span>
+		</span>
 	);
 };
 export default LeftPanel;
