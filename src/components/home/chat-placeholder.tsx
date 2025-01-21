@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 const ChatPlaceHolder = () => {
 
 	const handleButtonClick = () => {
-		// Redirect to the Microsoft Store link
 		window.open("https://apps.microsoft.com/home?hl=en-us&gl=IN", "_blank", "noopener,noreferrer");
 	};
 	return (

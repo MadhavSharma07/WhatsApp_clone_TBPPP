@@ -3,6 +3,7 @@ import { Input } from "../ui/input";
 import ThemeSwitch from "./theme-switch";
 import { conversations } from "@/dummy-data/db";
 import Conversation from "./conversation";
+import { UserButton } from "@clerk/nextjs";
 
 const LeftPanel = () => {
 	// const conversations = [];
@@ -11,7 +12,7 @@ const LeftPanel = () => {
 		<div className='w-1/4 border-gray-600 border-r'>
 			<div className='sticky top-0 bg-left-panel z-10'>
 				<div className='flex justify-between bg-gray-primary p-3 items-center'>
-					<User size={24} />
+					<UserButton/>
 
 					<div className='flex items-center gap-3'>
 						<MessageSquareDiff size={20} /> 
