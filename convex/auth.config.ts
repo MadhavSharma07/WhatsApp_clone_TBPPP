@@ -1,3 +1,4 @@
+
 const authconfig= {
   providers: [
     {
@@ -9,3 +10,4 @@ const authconfig= {
 
 
 export default authconfig;
+

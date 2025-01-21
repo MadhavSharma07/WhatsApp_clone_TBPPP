@@ -14,7 +14,11 @@
 
     /* These compiler options are required by Convex */
     "target": "ESNext",
+<<<<<<< HEAD
     "lib": ["ES2023", "dom"],
+=======
+    "lib": ["ES2021", "dom"],
+>>>>>>> c54f8dd36efeb99493702d55f4a1571d9a7a9b5c
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "isolatedModules": true,
