@@ -6,6 +6,7 @@ import { ConvexClientProvider } from "@/providers/convex-client-provider";
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
+import {Toaster} from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,13 +30,14 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning={true}>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
             <ConvexClientProvider>
             {children}
+            <Toaster/>
             </ConvexClientProvider>
           </ThemeProvider>
         </body>
