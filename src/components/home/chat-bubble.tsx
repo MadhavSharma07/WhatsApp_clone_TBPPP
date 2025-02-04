@@ -1,7 +1,12 @@
 import { MessageSeenSvg } from "@/lib/svgs";
 import { IMessage, useConversationStore } from "@/store/chat-store";
-import { Dialog, DialogContent, DialogDescription } from "@radix-ui/react-dialog";
-import { Bot } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dialog";
+import { Bot, DownloadIcon } from "lucide-react";
+import Image from "next/image";
+import ReactPlayer from "react-player";
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import mammoth from 'mammoth';
 import { useState } from "react";
 import ChatBubbleAvatar from "./chat-bubble-avatar";
 import DateIndicator from "./date-indicator";
@@ -28,18 +33,20 @@ const ChatBubble = ({ me, message, previousMessage }: ChatBubbleProps) => {
 	console.log(message.sender);
 	const [open, setOpen] = useState(false);
 
-	// const renderMessageContent = () => {
-	// 	switch (message.messageType) {
-	// 		case "text":
-	// 			return <TextMessage message={message} />;
-	// 		case "image":
-	// 			return <ImageMessage message={message} handleClick={() => setOpen(true)} />;
-	// 		case "video":
-	// 			return <VideoMessage message={message} />;
-	// 		default:
-	// 			return null;
-	// 	}
-	// };
+	const renderMessageContent = () => {
+		switch (message.messageType) {
+			case "text":
+				return <TextMessage message={message} />;
+			case "image":
+				return <ImageMessage message={message} handleClick={() => setOpen(true)} />;
+			case "video":
+				return <VideoMessage message={message} />;
+			case "docs":
+				return <DocsMessage message={message} />;
+			default:
+				return null;
+		}
+	};
 
 	if (!fromMe) {
 		return (
@@ -50,9 +57,13 @@ const ChatBubble = ({ me, message, previousMessage }: ChatBubbleProps) => {
 					<div className={`flex flex-col z-20 max-w-fit px-2 pt-1 rounded-md shadow-md relative ${bgClass}`}>
 						 <OtherMessageIndicator />
 						{/* {fromAI && <Bot size={16} className='absolute bottom-[2px] left-2' />} */}
-						<TextMessage message={message} />
-						{/* {renderMessageContent()} */}
-						{/* {open && <ImageDialog src={message.content} open={open} onClose={() => setOpen(false)} />} */}
+						{/* {message.messageType==="text"&& <TextMessage message={message} />}
+						{message.messageType==="image"&& <ImageMessage message={message}
+							handleClick={() => setOpen(true)} 
+						/>}
+						{message.messageType==="video"&& <VideoMessage message={message}/>} */}
+						{renderMessageContent()}
+						{open && <ImageDialog src={message.content} open={open} onClose={() => setOpen(false)} />}
 						<MessageTime time={time} fromMe={fromMe} />
 					</div>
 				</div>
@@ -67,9 +78,13 @@ const ChatBubble = ({ me, message, previousMessage }: ChatBubbleProps) => {
 			<div className='flex gap-1 w-2/3 ml-auto'>
 				<div className={`flex  z-20 max-w-fit px-2 pt-1 rounded-md shadow-md ml-auto relative ${bgClass}`}>
 					<SelfMessageIndicator />
-					<TextMessage message={message} />
-					{/* {renderMessageContent()} */}
-					{/* {open && <ImageDialog src={message.content} open={open} onClose={() => setOpen(false)} />} */}
+					{/* {message.messageType==="text"&& <TextMessage message={message} />}
+					{message.messageType==="image"&& <ImageMessage message={message} 
+						handleClick={() => setOpen(true)} 
+					/>}
+					{message.messageType==="video"&& <VideoMessage message={message}/>} */}
+					{renderMessageContent()}
+					{open && <ImageDialog src={message.content} open={open} onClose={() => setOpen(false)} />}
 					<MessageTime time={time} fromMe={fromMe} />
 				</div>
 			</div>
@@ -78,40 +93,93 @@ const ChatBubble = ({ me, message, previousMessage }: ChatBubbleProps) => {
 };
 export default ChatBubble;
 
-// const VideoMessage = ({ message }: { message: IMessage }) => {
-// 	return <ReactPlayer url={message.content} width='250px' height='250px' controls={true} light={true} />;
-// };
-
-// const ImageMessage = ({ message, handleClick }: { message: IMessage; handleClick: () => void }) => {
-// 	return (
-// 		<div className='w-[250px] h-[250px] m-2 relative'>
-// 			<Image
-// 				src={message.content}
-// 				fill
-// 				className='cursor-pointer object-cover rounded'
-// 				alt='image'
-// 				onClick={handleClick}
-// 			/>
-// 		</div>
+const VideoMessage = ({ message }: { message: IMessage }) => {
+	return <ReactPlayer url={message.content} width='250px' height='250px' controls={true} light={true} />;
+};
+// const DocsMessage = ({ message }: { message: IMessage }) => {
+// 	return  (
+// 	  <div className="w-[250px] h-[250px] m-2 relative">
+// 		<embed
+// 		  src={message.content}
+// 		  type={message.content.split(".").pop()}
+// 		  width="100%"
+// 		  height="100%"
+// 		/>
+// 	  </div>
 // 	);
-// };
+//   };
+// ...
 
-// const ImageDialog = ({ src, onClose, open }: { open: boolean; src: string; onClose: () => void }) => {
-// 	return (
-// 		<Dialog
-// 			open={open}
-// 			onOpenChange={(isOpen) => {
-// 				if (!isOpen) onClose();
-// 			}}
-// 		>
-// 			<DialogContent className='min-w-[750px]'>
-// 				<DialogDescription className='relative h-[450px] flex justify-center'>
-// 					<Image src={src} fill className='rounded-lg object-contain' alt='image' />
-// 				</DialogDescription>
-// 			</DialogContent>
-// 		</Dialog>
-// 	);
-// };
+const DocsMessage = ({ message }: { message: IMessage }) => {
+	const fileType = message.content.split(".").pop();
+	const fileName = message.content.split("/").pop();
+  
+	const handleOpenFile = () => {
+	  window.open(message.content, "_blank");
+	};
+  
+	const handleDownloadFile = () => {
+		const link = document.createElement("a");
+		link.href = message.content;
+		link.download = fileName || "file"; // Add a default value if fileName is undefined
+		link.click();
+	  };
+  
+	return (
+	  <div
+		className="flex items-center gap-2 p-2 rounded-md bg-white dark:bg-gray-primary cursor-pointer"
+		
+	  >
+		<div className="w-4 h-4 bg-gray-400 rounded-full" />
+		<div className="flex-1" onClick={handleOpenFile}>
+		  <span className="text-sm font-medium">{fileName}</span>
+		  <span className="text-xs text-gray-500">{fileType}</span>
+		</div>
+		<button
+		  className="text-sm text-blue-400 underline"
+		  onClick={(e) => {
+			e.stopPropagation();
+			handleDownloadFile();
+		  }}
+		>
+		  <DownloadIcon size={16} />
+		</button>
+	  </div>
+	);
+  };
+
+const ImageMessage = ({ message, handleClick }: { message: IMessage ; handleClick: () => void }) => {
+	return (
+		<div className='w-[250px] h-[250px] m-2 relative'>
+			<Image
+				src={message.content}
+				fill
+				className='cursor-pointer object-cover rounded'
+				alt='image'
+				onClick={handleClick}
+			/>
+		</div>
+	);
+};
+
+const ImageDialog = ({ src, onClose, open }: { open: boolean; src: string; onClose: () => void }) => {
+	return (
+		<Dialog
+			open={open}
+			onOpenChange={(isOpen) => {
+				if (!isOpen) onClose();
+			}}
+		>
+			<DialogContent className='min-w-[750px]'>
+				<DialogTitle>
+					<DialogDescription className='relative h-[450px] flex justify-center'>
+					<Image src={src} fill className='rounded-lg object-contain' alt='image' />
+				</DialogDescription>
+				</DialogTitle>
+			</DialogContent>
+		</Dialog>
+	);
+};
 
 const MessageTime = ({ time, fromMe }: { time: string; fromMe: boolean }) => {
 	return (
