@@ -4,12 +4,13 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "../ui/dia
 import { Bot, DownloadIcon } from "lucide-react";
 import Image from "next/image";
 import ReactPlayer from "react-player";
-import { Worker, Viewer } from '@react-pdf-viewer/core';
+import { Worker, Viewer } from '@react-pdf-viewer/core'; 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import mammoth from 'mammoth';
 import { useState } from "react";
 import ChatBubbleAvatar from "./chat-bubble-avatar";
 import DateIndicator from "./date-indicator";
+import ChatAvatarActions from "./chat-avatar-actions";
 
 type ChatBubbleProps = {
 	message: IMessage;
@@ -56,12 +57,14 @@ const ChatBubble = ({ me, message, previousMessage }: ChatBubbleProps) => {
 					<ChatBubbleAvatar isGroup={isGroup} isMember={isMember} message={message} fromAI={fromAI} />
 					<div className={`flex flex-col z-20 max-w-fit px-2 pt-1 rounded-md shadow-md relative ${bgClass}`}>
 						 <OtherMessageIndicator />
+						 {isGroup && <ChatAvatarActions message={message} me={me} />}
 						{/* {fromAI && <Bot size={16} className='absolute bottom-[2px] left-2' />} */}
 						{/* {message.messageType==="text"&& <TextMessage message={message} />}
 						{message.messageType==="image"&& <ImageMessage message={message}
 							handleClick={() => setOpen(true)} 
 						/>}
 						{message.messageType==="video"&& <VideoMessage message={message}/>} */}
+						  
 						{renderMessageContent()}
 						{open && <ImageDialog src={message.content} open={open} onClose={() => setOpen(false)} />}
 						<MessageTime time={time} fromMe={fromMe} />
