@@ -1,6 +1,6 @@
 import { Laugh, Mic, Plus, Send } from "lucide-react";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useMutation, useQuery } from "convex/react";
 import { useConversationStore } from "@/store/chat-store";
@@ -18,6 +18,12 @@ const MessageInput = () => {
 
 	const {ref,isComponentVisible,setIsComponentVisible} = useComponentVisible(false);
 
+	const [isRecording, setIsRecording] = useState(false);
+	const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+	const sendAudio = useMutation(api.messages.sendAudio);
+	const generateUploadUrl = useMutation(api.conversations._generateUploadUrl);
+	const [stream, setStream] = useState<MediaStream | null>(null);
+	const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
 	const handleSendtextMsg = async(e:React.FormEvent)=>{
 		e.preventDefault();
 		try{
@@ -30,6 +36,62 @@ const MessageInput = () => {
 			
 		}
 	}
+	const handleMicClick = async () => {
+		if (!isRecording) {
+		  try {
+			const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+			setStream(stream);
+			const mediaRecorder = new MediaRecorder(stream);
+			setMediaRecorder(mediaRecorder);
+			setIsRecording(true);
+		  } catch (error) {
+			console.error('Error accessing microphone:', error);
+		  }
+		} else {
+		  mediaRecorder?.stop();
+		  setIsRecording(false);
+		}
+	  };
+	
+	  useEffect(() => {
+		if (isRecording && mediaRecorder) {
+		  const audioChunks: Blob[] = [];
+	
+		  mediaRecorder.ondataavailable = (event) => {
+			audioChunks.push(event.data);
+		  };
+	
+		  mediaRecorder.onstop = () => {
+			const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+			setAudioBlob(audioBlob);
+			handleSendAudio();
+		  };
+	
+		  mediaRecorder.start();
+		}
+	  }, [isRecording, mediaRecorder]);
+	
+	  const handleSendAudio = async () => {
+		if (audioBlob) {
+		  try {
+			const postUrl = await generateUploadUrl();
+			const result = await fetch(postUrl, {
+			  method: "POST",
+			  headers: { "Content-Type": audioBlob.type },
+			  body: audioBlob,
+			});
+	
+			const { storageId } = await result.json();
+			await sendAudio({
+			  conversation: selectedConversation!._id,
+			  sender: me!._id,
+			  audioId: storageId,
+			});
+		  } catch (error) {
+			console.error('Error sending audio:', error);
+		  }
+		}
+	  };
 
 	return (
 		<div className='bg-gray-primary p-2 flex gap-4 items-center'>
@@ -69,13 +131,16 @@ const MessageInput = () => {
 							<Send />
 						</Button>
 					) : (
-						<Button
-							type='submit'
-							size={"sm"}
-							className='bg-transparent text-foreground hover:bg-transparent'
-						>
-							<Mic />
-						</Button>
+						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+							<Mic size={20} onClick={handleMicClick} className={isRecording ? 'text-red-500' : 'text-gray-100'} />
+							<p style={{ fontSize: 12, color: 'gray', marginTop: 5 }}>
+								{isRecording ? (
+								'Recording...'
+								) : (
+									null
+								)}
+							</p>
+						</div>
 					)}
 				</div>
 			</form>

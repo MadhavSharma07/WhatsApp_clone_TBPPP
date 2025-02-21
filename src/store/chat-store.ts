@@ -30,10 +30,12 @@ export const useConversationStore = create<ConversationStore>((set) => ({
 }));
 
 export interface IMessage {
+	[x: string]: any;
 	_id: string;
 	content: string;
+	// fileName:string;
 	_creationTime: number;
-	messageType: "text" | "image" | "video" | "docs";
+	messageType: "text" | "image" | "video" | "docs" | "audio" | "gifs";
 	sender: {
 		_id: Id<"users">;
 		image: string;

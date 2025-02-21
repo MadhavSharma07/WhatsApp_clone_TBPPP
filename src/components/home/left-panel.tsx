@@ -8,15 +8,26 @@ import { SignIn, SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
 import UserListDialog from "./user-list-dialog";
 import { useConvexAuth, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useConversationStore } from "@/store/chat-store";
 
 const LeftPanel = () => {
 	
 	const {isAuthenticated,isLoading} = useConvexAuth();
+	const [searchTerm, setSearchTerm] = useState("");
 	const conversations =  useQuery(api.conversations.getMyConversations,
 		isAuthenticated? undefined : "skip"
 	);
+	const filteredConversations = conversations?.filter((conversation) => {
+		const conversationName = conversation.groupName || (conversation as any).name;
+		return conversationName.toLowerCase().includes(searchTerm.toLowerCase());
+	});
+	const handleSearch = (e: React.FormEvent) => {
+		e.preventDefault();
+		const searchInput = e.currentTarget as HTMLFormElement;
+		const searchValue = (searchInput.elements.namedItem("search") as HTMLInputElement).value;
+		setSearchTerm(searchValue);
+	};
 	const { selectedConversation, setSelectedConversation } = useConversationStore();
 
 	useEffect(() => {
@@ -45,20 +56,30 @@ const LeftPanel = () => {
 							className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10'
 							size={18}
 						/>
-						<Input
+						{/* <Input
 							type='text'
 							placeholder='Search or start a new chat'
 							className='pl-10 py-2 text-sm w-full rounded shadow-sm bg-gray-primary focus-visible:ring-transparent'
-						/>
+						/> */}
+						<form onSubmit={handleSearch}>
+							<Input
+								type="text"
+								name="search"
+								placeholder="Search or start a new chat"
+								className="pl-10 py-2 text-sm w-full rounded shadow-sm bg-gray-primary focus-visible:ring-transparent"
+								value={searchTerm}
+								onChange={(e) => setSearchTerm(e.target.value)}
+							/>
+						</form>
 					</span>
 				</span>
 			</span>
 			<span className='my-3 flex flex-col gap-0 max-h-[80%] overflow-auto'>
 				{/* Conversations will go here*/}
-                {conversations?.map((conversations)=>(
+                {filteredConversations?.map((conversations)=>(
                     <Conversation key={conversations._id} conversation={conversations} />
                 ))}
-				{conversations?.length === 0 && (
+				{filteredConversations?.length === 0 && (
 					<>
 						<p className='text-center text-gray-500 text-sm mt-3'>No conversations yet</p>
 						<p className='text-center text-gray-500 text-sm mt-3 '>
