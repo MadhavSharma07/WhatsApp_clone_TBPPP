@@ -18,7 +18,31 @@ const MessageContainer = () => {
 		setTimeout(() => {
 			lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
 		}, 100);
+		Notification.requestPermission().then((permission) => {
+			if (permission === "granted") {
+			  console.log("Notification permission granted.");
+			} else {
+			  console.log("Unable to get permission to notify.");
+			}
+		});
 	}, [messages]);
+	useEffect(() => {
+		if (messages) {
+		  const newMessage = messages[messages.length - 1];
+		  if (newMessage) {
+			if (newMessage.sender._id !== me?._id) {
+			const notification=new Notification("New message ",{
+				body:`you have a new message from ${newMessage.sender.name}.`,
+			});
+			const notificationSound = new Audio("./notification.mp3");
+				notificationSound.play();
+			notification.onclick=()=>{
+				console.log("Notification clicked");
+			};
+			}
+		  }
+		}
+	},[messages]);
 
 	return (
 		<div className='relative p-3 flex-1 overflow-auto h-full bg-chat-tile-light dark:bg-chat-tile-dark'>

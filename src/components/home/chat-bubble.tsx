@@ -147,38 +147,24 @@ const VideoMessage = ({ message }: { message: IMessage }) => {
 };
 const AudioMessage = ({ message }: { message: IMessage }) => {
   return (
-    <div className="w-[250px] h-[250px] m-2 relative">
+    
       <audio controls>
-        <source src={message.content} type={message.content.split(".").pop()} />
+        <source src={message.content} />
       </audio>
-    </div>
   );
 };
 const GifMessage = ({ message }: { message: IMessage }) => {
   return (
-    <div className="w-[250px] h-[250px] m-2 relative">
+    
       <Image
         src={message.content}
         fill
         className="cursor-pointer object-cover rounded"
         alt="gifs"
       />
-    </div>
   );
 };
-// const DocsMessage = ({ message }: { message: IMessage }) => {
-// 	return  (
-// 	  <div className="w-[250px] h-[250px] m-2 relative">
-// 		<embed
-// 		  src={message.content}
-// 		  type={message.content.split(".").pop()}
-// 		  width="100%"
-// 		  height="100%"
-// 		/>
-// 	  </div>
-// 	);
-//   };
-// ...
+
 
 const DocsMessage = ({ message }: { message: IMessage }) => {
   const fileType = message.content.split(".").pop();
