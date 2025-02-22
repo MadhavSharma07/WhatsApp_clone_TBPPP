@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     domains: ["third-eel-787.convex.cloud"],
+    
   },
 };
 

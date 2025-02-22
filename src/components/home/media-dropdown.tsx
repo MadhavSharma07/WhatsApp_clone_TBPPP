@@ -10,6 +10,7 @@ import {
   DramaIcon,
   FilesIcon,
   ImageIcon,
+  MapPinIcon,
   PickaxeIcon,
   Plus,
   Video,
@@ -27,6 +28,7 @@ import { api } from "../../../convex/_generated/api";
 import { useConversationStore } from "@/store/chat-store";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { FileAudioIcon } from "lucide-react";
+import { sendLocation } from "../../../convex/messages";
 
 const MediaDropDown = () => {
   const imageInput = useRef<HTMLInputElement>(null);
@@ -34,12 +36,17 @@ const MediaDropDown = () => {
   const docsInput = useRef<HTMLInputElement>(null);
   const audioInput = useRef<HTMLInputElement>(null);
   const gifInput = useRef<HTMLInputElement>(null);
+  const locationInput = useRef<HTMLInputElement>(null);
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
   const [selectedDocs, setSelectedDocs] = useState<File | null>(null);
   const [selectedAudio, setSelectedAudio] = useState<File | null>(null);
   const [selectedGif, setSelectedGif] = useState<File | null>(null);
+  const [selectedLocation, setSelectedLocation] =  useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const generateUploadUrl = useMutation(api.conversations._generateUploadUrl);
@@ -47,7 +54,9 @@ const MediaDropDown = () => {
   const sendVideo = useMutation(api.messages.sendVideo);
   const sendDocs = useMutation(api.messages.sendDocs);
   const sendAudio = useMutation(api.messages.sendAudio);
+  const sendLocation = useMutation(api.messages.sendLocation);
   const sendGif = useMutation(api.messages.sendGif);
+
   const me = useQuery(api.users.getMe);
 
   const { selectedConversation } = useConversationStore();
@@ -179,6 +188,50 @@ const MediaDropDown = () => {
       setIsLoading(false);
     }
   };
+  const handleSendLocation = async () => {
+    if (!selectedLocation) return;
+
+    setIsLoading(true);
+    try {
+      const postUrl = await generateUploadUrl();
+      const result = await fetch(postUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(selectedLocation),
+      });
+
+      const { storageId } = await result.json();
+      await sendLocation({
+        conversation: selectedConversation!._id,
+        sender: me!._id,
+        locationId: storageId,
+      });
+
+      setSelectedLocation(null);
+    } catch (err) {
+      toast.error("Failed to send location");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleGetLocation = async () => {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by this browser.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        setSelectedLocation(location);
+      },
+      (error) => {
+        toast.error("Unable to retrieve your location: " + error.message);
+      }
+    );
+  };
 
   return (
     <>
@@ -264,6 +317,15 @@ const MediaDropDown = () => {
           handleSendGif={handleSendGif}
         />
       )}
+       {selectedLocation && (
+          <MediaLocationDialog
+            isOpen={selectedLocation !== null}
+            onClose={() => setSelectedLocation(null)}
+            selectedLocation={selectedLocation}
+            isLoading={isLoading}
+            handleSendLocation={handleSendLocation}
+          />
+        )}
 
       <DropdownMenu>
         <DropdownMenuTrigger>
@@ -290,6 +352,10 @@ const MediaDropDown = () => {
             <DramaIcon size={20} className="mr-1" />
             GIF
           </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleGetLocation}>
+          <MapPinIcon size={18} className="mr-1" />
+            Location
+        </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
@@ -584,6 +650,47 @@ const MediaGifDialog = ({
               className="w-full"
               disabled={isLoading}
               onClick={handleSendGif}
+            >
+              {isLoading ? "Sending..." : "Send"}
+            </Button>
+          </DialogDescription>
+        </DialogTitle>
+      </DialogContent>
+    </Dialog>
+  );
+};
+type MediaLocationDialogProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  selectedLocation: any;
+  isLoading: boolean;
+  handleSendLocation: () => void;
+};
+
+const MediaLocationDialog = ({
+  isOpen,
+  onClose,
+  selectedLocation,
+  isLoading,
+  handleSendLocation,
+}: MediaLocationDialogProps) => {
+  return (
+    <Dialog
+      open={isOpen}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+    >
+      <DialogContent>
+        <DialogTitle>
+          <DialogDescription className="flex flex-col gap-10 justify-center items-center">
+            <span>
+              Latitude: {selectedLocation.latitude}, Longitude: {selectedLocation.longitude}
+            </span>
+            <Button
+              className="w-full"
+              disabled={isLoading}
+              onClick={handleSendLocation}
             >
               {isLoading ? "Sending..." : "Send"}
             </Button>

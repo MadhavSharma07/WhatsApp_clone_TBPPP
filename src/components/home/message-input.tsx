@@ -82,7 +82,7 @@ const MessageInput = () => {
 			});
 	
 			const { storageId } = await result.json();
-			await sendAudio({
+			 sendAudio({
 			  conversation: selectedConversation!._id,
 			  sender: me!._id,
 			  audioId: storageId,
@@ -132,7 +132,7 @@ const MessageInput = () => {
 						</Button>
 					) : (
 						<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-							<Mic size={20} onClick={handleMicClick} className={isRecording ? 'text-red-500' : 'text-gray-100'} />
+							<Mic size={20} onClick={handleMicClick} className={isRecording ? 'text-red-500' : 'text-grey-900'} />
 							<p style={{ fontSize: 12, color: 'gray', marginTop: 5 }}>
 								{isRecording ? (
 								'Recording...'

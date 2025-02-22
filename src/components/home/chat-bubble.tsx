@@ -61,6 +61,8 @@ const ChatBubble = ({ me, message, previousMessage }: ChatBubbleProps) => {
         return <AudioMessage message={message} />;
       case "gifs":
         return <GifMessage message={message} />;
+      case "location":
+        return <LocationMessage message={message} />;
       default:
         return null;
     }
@@ -148,7 +150,10 @@ const VideoMessage = ({ message }: { message: IMessage }) => {
 const AudioMessage = ({ message }: { message: IMessage }) => {
   return (
     
-      <audio controls>
+      <audio controls style={{
+        width: "200px", // Change width to 100%
+        height: "50px", // Change height to 50px
+      }}>
         <source src={message.content} />
       </audio>
   );
@@ -164,7 +169,16 @@ const GifMessage = ({ message }: { message: IMessage }) => {
       />
   );
 };
-
+const LocationMessage = ({ message }: { message: IMessage }) => {
+  const location = JSON.parse(message.content);
+  return (
+    <div>
+      <span>
+        Latitude: {location.latitude}, Longitude: {location.longitude}
+      </span>
+    </div>
+  );
+};
 
 const DocsMessage = ({ message }: { message: IMessage }) => {
   const fileType = message.content.split(".").pop();

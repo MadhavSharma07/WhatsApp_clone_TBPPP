@@ -22,6 +22,14 @@ export default defineSchema({
 		conversation: v.id("conversations"),
 		sender: v.string(), // should be string so that it doesn't throw errors in openai part ("ChatGPT")
 		content: v.string(),
-		messageType: v.union(v.literal("text"), v.literal("image"), v.literal("video"),v.literal("docs"),v.literal("audio"),v.literal("gifs")),
+		messageType: v.union(v.literal("text"), v.literal("image"), v.literal("video"),v.literal("docs"),v.literal("audio"),v.literal("gifs"),v.literal("location")),
 	}).index("by_conversation", ["conversation"]),
+
+	statuses: defineTable({
+		userId: v.id("users"),
+		content: v.string(), 
+		type: v.union(v.literal("text"), v.literal("image"), v.literal("video")),
+		createdAt: v.number(), 
+		expiresAt: v.number(), 
+	  }),
 });

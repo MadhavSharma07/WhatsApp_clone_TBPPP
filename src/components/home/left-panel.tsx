@@ -1,5 +1,5 @@
 "use client";
-import { ListFilter, LogOut, MessageSquareDiff, Search, User } from "lucide-react";
+import { Eye, ListFilter, LogOut, MessageSquareDiff, Search, User } from "lucide-react";
 import { Input } from "../ui/input";
 import ThemeSwitch from "./theme-switch";
 // import { conversations } from "@/dummy-data/db";
@@ -10,6 +10,8 @@ import { useConvexAuth, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useEffect, useState } from "react";
 import { useConversationStore } from "@/store/chat-store";
+import StatusViewer from "./StatusViewer";
+import { Image } from "lucide-react";
 
 const LeftPanel = () => {
 	
@@ -18,6 +20,7 @@ const LeftPanel = () => {
 	const conversations =  useQuery(api.conversations.getMyConversations,
 		isAuthenticated? undefined : "skip"
 	);
+	const [showStatus, setShowStatus] = useState(false);
 	const filteredConversations = conversations?.filter((conversation) => {
 		const conversationName = conversation.groupName || (conversation as any).name;
 		return conversationName.toLowerCase().includes(searchTerm.toLowerCase());
@@ -43,11 +46,24 @@ const LeftPanel = () => {
 			<span className='sticky top-0 bg-left-panel z-10'>
 				<span className='flex justify-between bg-gray-primary p-3 items-center'>
 					<UserButton/>
-
+					
 					<span className='flex items-center gap-3'>
+					<button onClick={() => setShowStatus(true)}>
+						{/* <img
+						className="hover:cursor-pointer"
+						src={'/Status.svg'}
+						alt='status'
+						width={24}
+						height={24}
+						
+						/> */}
+						<Eye size={24} className="text-amber-600" />
+					</button>
+					{showStatus && <StatusViewer onClose={() => setShowStatus(false)} />}
 						{isAuthenticated && <UserListDialog/>}
 						<ThemeSwitch />
 					</span>
+
 				</span>
 				<span className='p-3 flex items-center'>
 					{/* Search */}

@@ -224,4 +224,26 @@ export const sendAudio = mutation({
 	  });
 	},
   });
+  export const sendLocation = mutation({
+	args: {
+	  locationId: v.id("_storage"),
+	  sender: v.id("users"),
+	  conversation: v.id("conversations"),
+	},
+	handler: async (ctx, args) => {
+	  const identity = await ctx.auth.getUserIdentity();
+	  if (!identity) {
+		throw new ConvexError("Unauthorized");
+	  }
+  
+	  const content = (await ctx.storage.getUrl(args.locationId)) as string;
+  
+	  await ctx.db.insert("messages", {
+		content: content,
+		sender: args.sender,
+		messageType: "location",
+		conversation: args.conversation,
+	  });
+	},
+  });
   

@@ -35,7 +35,7 @@ export interface IMessage {
 	content: string;
 	// fileName:string;
 	_creationTime: number;
-	messageType: "text" | "image" | "video" | "docs" | "audio" | "gifs";
+	messageType: "text" | "image" | "video" | "docs" | "audio" | "gifs" |"location";
 	sender: {
 		_id: Id<"users">;
 		image: string;
