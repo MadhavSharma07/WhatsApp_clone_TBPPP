@@ -170,12 +170,12 @@ const GifMessage = ({ message }: { message: IMessage }) => {
   );
 };
 const LocationMessage = ({ message }: { message: IMessage }) => {
-  const location = JSON.parse(message.content);
+  const locationUrl = message.content;
   return (
     <div>
-      <span>
-        Latitude: {location.latitude}, Longitude: {location.longitude}
-      </span>
+      <a href={locationUrl} target="_blank" rel="noopener noreferrer">
+        View Location
+      </a>
     </div>
   );
 };
