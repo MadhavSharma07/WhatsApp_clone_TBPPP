@@ -2,8 +2,9 @@ import React from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Heart, Laugh, ThumbsUp, Frown } from "lucide-react";
+import { Id } from "../../../convex/_generated/dataModel";
 
-const StatusReactions = ({ statusId }: { statusId: any }) => {
+const StatusReactions = ({ statusId }: { statusId: Id<"statuses"> }) => {
   const reactions = useQuery(api.status.getReactions, { statusId });
 
   return (
