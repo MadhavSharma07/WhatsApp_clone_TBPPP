@@ -10,8 +10,10 @@ import { useConvexAuth, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useEffect, useState } from "react";
 import { useConversationStore } from "@/store/chat-store";
-import StatusViewer from "./StatusViewer";
 import { Image } from "lucide-react";
+import StatusViewer from "./status-viewer";
+import StatusReactions from "./status-reactions";
+import StatusUpload from "./status-upload";
 
 const LeftPanel = () => {
 	
@@ -48,7 +50,7 @@ const LeftPanel = () => {
 					<UserButton/>
 					
 					<span className='flex items-center gap-3'>
-					<button onClick={() => setShowStatus(true)}>
+					{/* <button onClick={() => setShowStatus(true)}> */}
 						{/* <img
 						className="hover:cursor-pointer"
 						src={'/Status.svg'}
@@ -57,9 +59,21 @@ const LeftPanel = () => {
 						height={24}
 						
 						/> */}
-						<Eye size={24} className="text-amber-600" />
-					</button>
-					{showStatus && <StatusViewer onClose={() => setShowStatus(false)} />}
+						{/* <Eye size={24} className="text-amber-600" /> */}
+					{/* </button> */}
+					{/* {showStatus && <StatusViewer onClose={() => setShowStatus(false)} />} */}
+					<button onClick={() => setShowStatus(true)}>
+            <img
+              className="hover:cursor-pointer"
+              src={"/Status.svg"}
+              alt="status"
+              width={24}
+              height={24}
+            />
+          </button>
+          {showStatus && <StatusViewer />}
+          {showStatus && <StatusUpload userId={""} />}
+          {showStatus && <StatusReactions statusId={undefined} />}
 						{isAuthenticated && <UserListDialog/>}
 						<ThemeSwitch />
 					</span>

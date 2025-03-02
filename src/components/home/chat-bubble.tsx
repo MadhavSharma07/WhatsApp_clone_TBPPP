@@ -171,9 +171,11 @@ const GifMessage = ({ message }: { message: IMessage }) => {
 };
 const LocationMessage = ({ message }: { message: IMessage }) => {
   const locationUrl = message.content;
+  const [latitude, longitude] = locationUrl.split(",");
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   return (
     <div>
-      <a href={locationUrl} target="_blank" rel="noopener noreferrer">
+      <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer">
         View Location
       </a>
     </div>

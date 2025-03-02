@@ -32,4 +32,8 @@ export default defineSchema({
 		createdAt: v.number(), 
 		expiresAt: v.number(), 
 	  }),
+	  reactions: defineTable({
+		statusId: v.id("statuses"),
+		type: v.union(v.literal("like"), v.literal("love"), v.literal("laugh"), v.literal("sad")),
+	  }),
 });
