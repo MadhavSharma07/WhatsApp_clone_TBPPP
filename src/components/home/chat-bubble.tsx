@@ -6,12 +6,12 @@ import {
   DialogDescription,
   DialogTitle,
 } from "../ui/dialog";
-import { Bot, DownloadIcon } from "lucide-react";
+import {  DownloadIcon } from "lucide-react";
 import Image from "next/image";
 import ReactPlayer from "react-player";
-import { Worker, Viewer } from "@react-pdf-viewer/core";
+// import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import mammoth from "mammoth";
+// import mammoth from "mammoth";
 import { useState } from "react";
 import ChatBubbleAvatar from "./chat-bubble-avatar";
 import DateIndicator from "./date-indicator";

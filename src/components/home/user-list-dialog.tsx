@@ -15,7 +15,7 @@ import { Button } from "../ui/button";
 import { ImageIcon, MessageSquareDiff } from "lucide-react";
 // import { users } from "@/dummy-data/db";
 import { Id } from "../../../convex/_generated/dataModel";
-import { handleClientScriptLoad } from "next/script";
+// import { handleClientScriptLoad } from "next/script";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import toast from "react-hot-toast";

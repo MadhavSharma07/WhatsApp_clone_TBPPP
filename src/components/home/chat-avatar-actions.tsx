@@ -7,7 +7,7 @@ import React from "react";
 
 type ChatAvatarActionsProps = {
 	message: IMessage;
-	me: any;
+	me:any;
 };
 
 const ChatAvatarActions = ({ me, message }: ChatAvatarActionsProps) => {
@@ -33,7 +33,8 @@ const ChatAvatarActions = ({ me, message }: ChatAvatarActionsProps) => {
 				...selectedConversation,
 				participants: selectedConversation.participants.filter((id) => id !== message.sender._id),
 			});
-		} catch (error) {
+		 }
+		 catch (err) {
 			toast.error("Failed to kick user");
 		}
 	};
@@ -55,7 +56,7 @@ const ChatAvatarActions = ({ me, message }: ChatAvatarActionsProps) => {
 				isOnline: message.sender.isOnline,
 				image: message.sender.image,
 			});
-		} catch (error) {
+		} catch (err) {
 			toast.error("Failed to create conversation");
 		}
 	};

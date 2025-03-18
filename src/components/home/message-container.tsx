@@ -1,4 +1,4 @@
-import { messages } from "@/dummy-data/db";
+// import { messages } from "@/dummy-data/db";
 import ChatBubble from "./chat-bubble";
 import { useConversationStore } from "@/store/chat-store";
 import { useQuery } from "convex/react";

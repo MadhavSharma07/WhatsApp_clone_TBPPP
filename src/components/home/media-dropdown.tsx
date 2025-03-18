@@ -6,12 +6,10 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import {
-  CameraIcon,
   DramaIcon,
   FilesIcon,
   ImageIcon,
   MapPinIcon,
-  PickaxeIcon,
   Plus,
   Video,
 } from "lucide-react";
@@ -19,16 +17,16 @@ import { Dialog, DialogContent, DialogDescription } from "../ui/dialog";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import ReactPlayer from "react-player";
-import { Worker, Viewer } from "@react-pdf-viewer/core";
+// import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import mammoth from "mammoth";
+// import mammoth from "mammoth";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useConversationStore } from "@/store/chat-store";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { FileAudioIcon } from "lucide-react";
-import { sendLocation } from "../../../convex/messages";
+// import { sendLocation } from "../../../convex/messages";
 
 const MediaDropDown = () => {
   const imageInput = useRef<HTMLInputElement>(null);
@@ -36,7 +34,7 @@ const MediaDropDown = () => {
   const docsInput = useRef<HTMLInputElement>(null);
   const audioInput = useRef<HTMLInputElement>(null);
   const gifInput = useRef<HTMLInputElement>(null);
-  const locationInput = useRef<HTMLInputElement>(null);
+  // const locationInput = useRef<HTMLInputElement>(null);
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
@@ -82,8 +80,6 @@ const MediaDropDown = () => {
       });
 
       setSelectedImage(null);
-    } catch (err) {
-      toast.error("Failed to send image");
     } finally {
       setIsLoading(false);
     }
@@ -108,8 +104,7 @@ const MediaDropDown = () => {
       });
 
       setSelectedVideo(null);
-    } catch (error) {
-    } finally {
+    }  finally {
       setIsLoading(false);
     }
   };
@@ -133,8 +128,7 @@ const MediaDropDown = () => {
       });
 
       setSelectedDocs(null);
-    } catch (error) {
-    } finally {
+    }  finally {
       setIsLoading(false);
     }
   };
@@ -182,8 +176,6 @@ const MediaDropDown = () => {
       });
 
       setSelectedGif(null);
-    } catch (err) {
-      toast.error("Failed to send GIF");
     } finally {
       setIsLoading(false);
     }
@@ -208,8 +200,6 @@ const MediaDropDown = () => {
       });
 
       setSelectedLocation(null);
-    } catch (err) {
-      toast.error("Failed to send location");
     } finally {
       setIsLoading(false);
     }
@@ -483,7 +473,7 @@ const MediaDocsDialog = ({
   handleSendDocs,
 }: MediaDocsDialogProps) => {
   const [renderedDocs, setRenderedDocs] = useState<string | null>(null);
-  const [docxContent, setDocxContent] = useState<string | null>(null);
+  const [docxContent] = useState<string | null>(null);
 
   useEffect(() => {
     if (!selectedDocs) return;
